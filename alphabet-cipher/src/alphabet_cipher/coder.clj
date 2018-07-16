@@ -42,14 +42,14 @@
 
 (defn find-pattern
   [letters]
-  (some #(when % %)
-  (for [c (range (count letters)) :when (> c 1)]
-               (let [partitions (partition-all c letters)]
-                 (if (apply = (butlast partitions))
-                   (if (= (last (diff (first partitions) (last partitions))) (last partitions))
-                     (first partitions)))))))
+  (or (some #(when % %)
+            (for [c (range (count letters)) :when (> c 1)]
+              (let [partitions (partition-all c letters)]
+                (if (apply = (butlast partitions))
+                  (if (= (last (diff (first partitions) (last partitions))) (last partitions))
+                    (first partitions))))))) letters)
 
 (defn decipher [cipher message]
   (join (find-pattern
-   (map extract-keyword
-        message cipher))))
+         (map extract-keyword
+              message cipher))))
